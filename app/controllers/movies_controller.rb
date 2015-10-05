@@ -13,7 +13,23 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    @all_ratings = Movie.all_ratings
+    sort = params[:sort] || session[:sort]
+    if sort == 'title'
+      @movies = Movie.order(:title)
+    elsif sort == 'release_date'
+      @movies = Movie.order (:release_date)
+    else	     		
+      @movies = Movie.all
+    end
+    @sort_ratings = params[:ratings]	
+    if @sort_ratings != nil 
+	    @movies = Movie.where(["rating IN (?)", @sort_ratings.keys]).all
+    elsif 
+      h = Hash.new
+	    Movie.all_ratings.each { | e | h[e] = "1" }
+      @sort_ratings = h
+    end
   end
 
   def new
