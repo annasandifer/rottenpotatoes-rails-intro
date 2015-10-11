@@ -3,4 +3,7 @@ module MoviesHelper
   def oddness(count)
     count.odd? ?  "odd" :  "even"
   end
+  def checked_rating?(rating)
+    session[:ratings].keys.include? rating
+  end
 end
